@@ -1,7 +1,18 @@
 const Post = require("../../models/Post");
 
+exports.fetchPost = async (req, res) => {
+  try {
+    const newPost = await Post.create(req.body);
+    res.status(201).json(newPost);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 exports.postsCreate = async (req, res) => {
   try {
+    if (req.file) {
+      req.body.image = `${req.file.path}`;
+    }
     const newPost = await Post.create(req.body);
     res.status(201).json(newPost);
   } catch (error) {
@@ -12,7 +23,9 @@ exports.postsCreate = async (req, res) => {
 exports.postsDelete = async (req, res) => {
   const { postId } = req.params;
   try {
+    // await req.post.deleteOne()
     const foundPost = await Post.findById(postId);
+
     if (foundPost) {
       await foundPost.deleteOne();
       res.status(204).end();
