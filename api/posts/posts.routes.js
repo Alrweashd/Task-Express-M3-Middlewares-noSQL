@@ -14,6 +14,7 @@ router.param("postId", async (req, res, next, postId) => {
     if (!foundPost) return next({ status: 404, msg: "Post not found" });
 
     req.post = foundPost;
+    next();
   } catch (error) {
     return next(error);
   }
