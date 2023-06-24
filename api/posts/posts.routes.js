@@ -10,9 +10,10 @@ const {
 } = require("./posts.controllers");
 router.param("postId", async (req, res, next, postId) => {
   try {
+    console.log("Params runs");
     const foundPost = await fetchPost(postId);
     if (!foundPost) return next({ status: 404, msg: "Post not found" });
-
+    console.log(foundPost);
     req.post = foundPost;
     next();
   } catch (error) {
@@ -23,7 +24,6 @@ router.get("/", postsGet);
 router.post("/", uploader.single("image"), postsCreate);
 
 router.delete("/:postId", postsDelete);
-
 router.put("/:postId", postsUpdate);
 
 module.exports = router;

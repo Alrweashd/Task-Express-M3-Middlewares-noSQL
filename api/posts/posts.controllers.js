@@ -27,8 +27,14 @@ exports.postsDelete = async (req, res, next) => {
 
 exports.postsUpdate = async (req, res, next) => {
   try {
-    await req.post.updateOne(req.body, { new: true });
-    res.status(204).end();
+    console.log("controller runs");
+    // await req.post.updateOne(req.body);
+
+    const updated = await Post.findByIdAndUpdate(req.post._id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+    res.status(200).json(updated);
   } catch (error) {
     next(error);
   }
